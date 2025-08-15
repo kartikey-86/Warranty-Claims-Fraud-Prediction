@@ -10,7 +10,7 @@ Identify and prioritize likely fraudulent claims to reduce payouts and investiga
 `claim_id`, `customer_id`, `product_type`, `purchase_date`, `claim_date`, `failure_code`, `service_center`, `claim_amount`, `approved` (Y/N), `fraud_label` (Y/N or NULL)
 
 ## 🛠 Tools
-Python (Pandas, Scikit‑learn), SQL, Power BI
+Python (Pandas, Scikit‑learn), SQL
 
 ## 🔬 Method
 - Data quality checks (duplicates, date validity, claim‑after‑purchase logic).  
@@ -37,7 +37,4 @@ Warranty_Fraud_Detection/
 ├─ README.md
 ├─ scripts/
 │  └─ fraud_analysis.sql
-└─ bi/
-   ├─ dashboard_layout.md
-   └─ dax_measures.md
 ```
