@@ -1,0 +1,147 @@
+# Warranty Claims Fraud Detection - Configuration File
+
+# Data Configuration
+data:
+  raw_data_path: "data/raw/df_Clean.csv"
+  processed_data_path: "data/processed/"
+  test_size: 0.2
+  validation_size: 0.2
+  random_state: 42
+
+# Feature Engineering
+features:
+  categorical_features:
+    - "Region"
+    - "State" 
+    - "Area"
+    - "City"
+    - "Consumer_profile"
+    - "Product_category"
+    - "Product_type"
+    - "AC_1001_Issue"
+    - "AC_1002_Issue"
+    - "AC_1003_Issue"
+    - "TV_2001_Issue"
+    - "TV_2002_Issue"
+    - "TV_2003_Issue"
+    - "Purchased_from"
+    - "Purpose"
+  
+  numerical_features:
+    - "Claim_Value"
+    - "Service_Centre"
+    - "Product_Age"
+    - "Call_details"
+  
+  target_column: "Fraud"
+  
+  # Feature engineering options
+  create_derived_features: true
+  handle_class_imbalance: true
+  scaling_method: "standard"  # options: standard, minmax, robust
+
+# Model Configuration
+models:
+  logistic_regression:
+    enabled: true
+    params:
+      C: [0.01, 0.1, 1, 10, 100]
+      penalty: ['l1', 'l2', 'elasticnet']
+      solver: ['liblinear', 'saga']
+      max_iter: 1000
+  
+  random_forest:
+    enabled: true
+    params:
+      n_estimators: [50, 100, 200, 300]
+      max_depth: [3, 5, 7, 10, null]
+      min_samples_split: [2, 5, 10]
+      min_samples_leaf: [1, 2, 4]
+      class_weight: ['balanced', 'balanced_subsample']
+  
+  xgboost:
+    enabled: true
+    params:
+      n_estimators: [50, 100, 200]
+      max_depth: [3, 5, 7]
+      learning_rate: [0.01, 0.1, 0.2]
+      subsample: [0.8, 0.9, 1.0]
+      colsample_bytree: [0.8, 0.9, 1.0]
+      scale_pos_weight: [1, 2, 5, 10]
+  
+  gradient_boosting:
+    enabled: true
+    params:
+      n_estimators: [50, 100, 200]
+      max_depth: [3, 5, 7]
+      learning_rate: [0.01, 0.1, 0.2]
+      subsample: [0.8, 0.9, 1.0]
+
+# Cross-validation
+cv:
+  n_folds: 5
+  scoring: ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']
+  stratify: true
+
+# Model Selection
+model_selection:
+  primary_metric: "f1"
+  secondary_metric: "roc_auc"
+  save_all_models: true
+  save_best_model: true
+
+# Evaluation
+evaluation:
+  metrics:
+    - "accuracy"
+    - "precision" 
+    - "recall"
+    - "f1"
+    - "roc_auc"
+    - "confusion_matrix"
+    - "classification_report"
+  
+  plots:
+    - "confusion_matrix"
+    - "roc_curve"
+    - "precision_recall_curve"
+    - "feature_importance"
+    - "learning_curves"
+
+# API Configuration
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: true
+  model_path: "models/best_model.pkl"
+  scaler_path: "models/scaler.pkl"
+  encoder_path: "models/encoder.pkl"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_handler: "logs/app.log"
+  console_handler: true
+
+# Paths
+paths:
+  models_dir: "models/"
+  logs_dir: "logs/"
+  plots_dir: "plots/"
+  reports_dir: "reports/"
+
+# Business Rules
+business_rules:
+  high_risk_threshold: 0.7
+  medium_risk_threshold: 0.5
+  max_claim_amount: 100000
+  min_product_age: 0
+  max_product_age: 3650  # 10 years in days
+  
+# Deployment
+deployment:
+  containerization: true
+  auto_model_update: false
+  model_monitoring: true
+  data_drift_detection: true
